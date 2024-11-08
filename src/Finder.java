@@ -26,18 +26,17 @@ public class Finder {
 
         String line;
         while ((line = br.readLine()) != null) {
+            // Goes through each line of the CVS file and takes the key and value and adds
+            // them in the proper location in the table.
             list.add(line.split(",")[keyCol], line.split(",")[valCol]);
         }
-
-//        for (int i = 0; i < list; i++)
-//            if (list[i] != null)
-//                System.out.println(i + " | " + list[i].getKey() + " | " + list[i].getValue());
 
         br.close();
     }
 
 
     public String query(String key){
+        // Returns the element found through the findElement function in HashMap.
         return list.findElement(key);
     }
 
