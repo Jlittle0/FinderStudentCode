@@ -15,79 +15,31 @@ import java.util.Arrays;
 public class Finder {
 
     private static final String INVALID = "INVALID KEY";
+    public HashMap list;
 
     public Finder() {}
 
-    // Large Prime Number
-    public int array_size = 32000;
-    public  KVPair[] list;
-
     public void buildTable(BufferedReader br, int keyCol, int valCol) throws IOException {
         // TODO: Complete the buildTable() function!
-        // How to read in data: br.readLine().split(",")[index] with the index being col or key.
-        // End of the cvs returns null so while loop until null.
 
-
-        int index = 0;
-        String value;
-        String key;
-
-        // Iterate through all lines, given the elements, add them to the array while alpha is
-        // less than half full;
-
-
-        int currentElements = 0;
-        double alpha;
-        list = new KVPair[array_size];
+        list = new HashMap();
 
         String line;
         while ((line = br.readLine()) != null) {
-            alpha = (double)currentElements / array_size;
-            if (alpha >= 0.5) {
-                list = newArray(list);
-            }
-            index = findIndex(list, line.split(",")[keyCol]);
-            list[index] = new KVPair(line.split(",")[keyCol], line.split(",")[valCol]);
-            currentElements++;
+            list.add(line.split(",")[keyCol], line.split(",")[valCol]);
         }
+
+//        for (int i = 0; i < list; i++)
+//            if (list[i] != null)
+//                System.out.println(i + " | " + list[i].getKey() + " | " + list[i].getValue());
 
         br.close();
     }
 
-    public KVPair[] newArray(KVPair[] arr) {
-        array_size *= 2;
-        KVPair[] newArr = new KVPair[array_size];
-        for (KVPair p : arr)
-            if (p != null)
-                newArr[findIndex(arr, p.getKey())] = p;
-        return newArr;
-    }
-
-    public int findIndex(KVPair[] list, String key) {
-        int index = convertVal(key);
-        while (list[index] != null) {
-            index = (index + 1) % array_size;
-        }
-        return index;
-    }
 
     public String query(String key){
-        int index = convertVal(key);
-        while (list[index] != null && !list[index].getKey().equals(key))
-            index = (index + 1) % array_size;
-        return list[index] == null ? "INVALID KEY" : list[index].getValue();
+        return list.findElement(key);
     }
 
-    public int convertVal(String s) {
-        int numSTR = s.charAt(0);
-        for (int i = 1; i < s.length(); i++) {
-            numSTR = (shiftLeft(numSTR) + s.charAt(i)) % array_size;
-        }
-        return numSTR;
-    }
 
-    public int shiftLeft(int num) {
-        // Multiply by 256 aka radix
-        return num << 8;
-    }
 }
